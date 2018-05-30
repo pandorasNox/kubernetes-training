@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crazy-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: my-crazy-nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: my-crazy-nginx
+    spec:
+      containers:
+      - name: nginx
+        # image: registry:5000/crazy-nginx:1
+        image: 10.16.0.5:5000/crazy-nginx:1
+        ports:
+        - containerPort: 80
