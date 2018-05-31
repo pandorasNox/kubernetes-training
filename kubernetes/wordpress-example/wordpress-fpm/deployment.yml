@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-example-deploy
+  namespace: wordpress-example
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-example
+  replicas: 1
+  template:
+    metadata:
+      name: wordpress-pod-template
+      labels:
+        app: wordpress-example
+    spec:
+      containers:
+        - name: wordpress
+          image: wordpress:4.9.6-php7.2-fpm-alpine
+          ports:
+          - containerPort: 9000
+        - name: nginx
+          # image: nginx:1.10.0
+          # image: 10.16.0.5:5000/wordpress-fpm-nginx:1
+          image: 10.16.0.5:5000/wordpress-fpm-nginx:1
+          ports:
+          - containerPort: 80
