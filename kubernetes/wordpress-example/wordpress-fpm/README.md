@@ -12,5 +12,5 @@
 
 5. apply deplyo + service amd in deployment.yml use the right image
     `image: 10.16.0.5:5000/wordpress-fpm-nginx:1`
-    `kubectl apply -f kubernetes/wordpress-example/wordpress-fpm/namespace.yml kubernetes/wordpress-example/wordpress-fpm/`
+    `kubectl apply -f kubernetes/wordpress-example/wordpress-fpm/namespace.yml,kubernetes/wordpress-example/wordpress-fpm/`
     check: `watch kubectl get pods`

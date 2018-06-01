@@ -1,0 +1,54 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-svc
+  namespace: wordpress-example
+spec:
+  type: ClusterIP
+  selector:
+    app: wordpress-example-mysql
+  ports:
+  - name: port-1
+    port: 3306
+    protocol: TCP
+    # targetPort: 3306 # don't have to be defined if its eq to port
+
+---
+apiVersion: apps/v1
+kind: Deployment
+# kind: StatefulSet
+metadata:
+  name: mysql-deploy
+  namespace: wordpress-example
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-example-mysql
+  replicas: 1
+  template:
+    metadata:
+      name: wordpress-mysql-pod-template
+      labels:
+        app: wordpress-example-mysql
+    spec:
+      containers:
+      - name: mysql
+        # image: mysql:8.0.11
+        image: mysql:5.7.22
+        ports:
+        - containerPort: 3306
+        args:
+          - --character-set-server=utf8mb4
+          - --collation-server=utf8mb4_unicode_ci
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+        readinessProbe:
+          tcpSocket:
+            port: 3306

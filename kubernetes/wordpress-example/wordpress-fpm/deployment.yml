@@ -19,9 +19,24 @@ spec:
           image: wordpress:4.9.6-php7.2-fpm-alpine
           ports:
           - containerPort: 9000
+            name: foo
+          env:
+          - name: WORDPRESS_DB_HOST
+            value: mysql-svc
+            #value: mysql-svc
+          - name: WORDPRESS_DB_USER
+            value: root
+          - name: WORDPRESS_DB_PASSWORD
+            value: root
+          # - name: WORDPRESS_DB_NAME
+          #   value: wp-kube-db
         - name: nginx
           # image: nginx:1.10.0
-          # image: 10.16.0.5:5000/wordpress-fpm-nginx:1
-          image: 10.16.0.5:5000/wordpress-fpm-nginx:1
+          # image: 10.16.0.5:5000/wordpress-fpm-nginx:2 | 9
+          image: 10.16.0.5:5000/wordpress-fpm-nginx:2
           ports:
           - containerPort: 80
+      initContainers:
+      - name: init-mydb
+        image: saltside/await
+        command: ['sh', '-c', 'await mysql://root:root@mysql-svc:3306']
